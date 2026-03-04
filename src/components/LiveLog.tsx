@@ -75,7 +75,7 @@ export default function LiveLog({
       </div>
 
       {/* Log output — fixed area, scroll inside */}
-      <div className="flex-1 min-h-0 overflow-y-auto font-mono text-[11px] leading-relaxed p-2">
+      <div className="flex-1 min-h-0 overflow-y-auto font-mono text-[11px] leading-relaxed p-2" style={{ maxHeight: 'calc(100vh - 300px)' }}>
         {logs.length === 0 ? (
           <p className="text-center text-forge-muted py-8">Waiting for test run...</p>
         ) : (

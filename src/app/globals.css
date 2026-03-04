@@ -52,4 +52,56 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
+  /* ─── Theme Overrides ─────────────────────────────────────────────── */
+
+  /* Dark is the default theme (matches existing forge-* colors) */
+  .theme-dark {
+    background-color: #0d0f14;
+    color: #e2e8f0;
+  }
+
+  /* Light theme – soft gray surfaces and dark text */
+  .theme-light {
+    background-color: #f3f4f6;
+    color: #0f172a;
+  }
+
+  /* Main shell backgrounds */
+  .theme-light .bg-forge-bg {
+    background-color: #f3f4f6 !important;
+  }
+  .theme-light .bg-forge-surface {
+    background-color: #ffffff !important;
+  }
+  .theme-light .bg-forge-surface2 {
+    background-color: #f9fafb !important;
+  }
+
+  /* High-contrast text for light mode */
+  .theme-light,
+  .theme-light body {
+    color: #111827 !important;
+  }
+  .theme-light .text-forge-text {
+    color: #111827 !important; /* slate-900 */
+  }
+  .theme-light .text-forge-muted {
+    color: #4b5563 !important; /* slate-600 */
+  }
+  .theme-light .text-forge-dim {
+    color: #6b7280 !important; /* slate-500 */
+  }
+
+  .theme-light .border-forge-border {
+    border-color: #e5e7eb !important;
+  }
+
+  /* Slightly lighter header backgrounds */
+  .theme-light .bg-forge-bg\/95 {
+    background-color: rgba(243, 244, 246, 0.95) !important; /* slate-100 */
+  }
+  .theme-light .bg-forge-surface\/95 {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+  }
 }

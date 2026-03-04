@@ -8,6 +8,7 @@ interface Props {
   onSelect: (tc: SavedTestCase) => void
   onDelete: (id: string) => void
   onRename: (id: string, name: string) => void
+  onRun?: (tc: SavedTestCase) => void
 }
 
 const STATUS_BADGE: Record<string, { cls: string; label: string }> = {
@@ -17,7 +18,7 @@ const STATUS_BADGE: Record<string, { cls: string; label: string }> = {
   idle:  { cls: 'bg-forge-surface2 border-forge-border text-forge-muted',   label: 'NEW' },
 }
 
-export default function TestCasesPanel({ cases, onSelect, onDelete, onRename }: Props) {
+export default function TestCasesPanel({ cases, onSelect, onDelete, onRename, onRun }: Props) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editName, setEditName] = useState('')
 
@@ -58,7 +59,7 @@ export default function TestCasesPanel({ cases, onSelect, onDelete, onRename }: 
         </span>
       </div>
 
-      <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2">
+      <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-2" style={{ maxHeight: 'calc(100vh - 200px)' }}>
         {cases.map((tc) => {
           const badge = STATUS_BADGE[tc.status] ?? STATUS_BADGE.idle
           const lines = tc.code.split('\n').length
@@ -112,6 +113,16 @@ export default function TestCasesPanel({ cases, onSelect, onDelete, onRename }: 
                 <span>{timeStr}</span>
 
                 <div className="ml-auto flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  {onRun && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onRun(tc) }}
+                      className="px-1.5 py-0.5 rounded border border-forge-border bg-forge-surface2
+                        text-forge-muted hover:text-forge-green hover:border-forge-green transition-all"
+                      title="Run"
+                    >
+                      ▶️
+                    </button>
+                  )}
                   <button
                     onClick={(e) => { e.stopPropagation(); startRename(tc) }}
                     className="px-1.5 py-0.5 rounded border border-forge-border bg-forge-surface2

@@ -34,12 +34,13 @@ interface Props {
   onSlowMoChange:  (s: number) => void
   onTimeoutChange: (t: number) => void
   onRetriesChange: (r: number) => void
+  onHistoryClick?: (item: HistoryItem) => void
 }
 
 export default function Sidebar({
   testType, browser, mode, url, slowMo, timeout, retries, history,
   onTypeChange, onBrowserChange, onModeChange, onUrlChange,
-  onSlowMoChange, onTimeoutChange, onRetriesChange,
+  onSlowMoChange, onTimeoutChange, onRetriesChange, onHistoryClick,
 }: Props) {
   const [showConfig, setShowConfig] = useState(false)
 
@@ -172,7 +173,7 @@ export default function Sidebar({
       </div>
 
       {/* History */}
-      <div className="flex items-center px-3 py-2 border-b border-forge-border">
+      <div className="flex items-center px-3 py-2 border-b border-forge-border shrink-0">
         <span className="text-[10px] font-bold tracking-widest text-forge-muted uppercase font-mono">
           Run History
         </span>
@@ -181,21 +182,37 @@ export default function Sidebar({
           {history.length}
         </span>
       </div>
-      <div className="flex-1 overflow-y-auto p-1.5">
+      <div className="flex-1 min-h-0 overflow-y-auto p-1.5" style={{ maxHeight: '400px' }}>
         {history.length === 0 ? (
           <p className="text-center text-[11px] text-forge-muted py-8 font-mono">No runs yet</p>
         ) : (
-          history.slice(0, 30).map((h, i) => (
+          history.map((h, i) => (
             <div
               key={h.id}
+              onClick={() => h.reportPath && onHistoryClick?.(h)}
               className={clsx(
-                'px-2.5 py-2 rounded-lg border mb-1 cursor-default transition-all',
+                'px-2.5 py-2 rounded-lg border mb-1 transition-all',
+                h.reportPath ? 'cursor-pointer hover:border-forge-accent/50' : 'cursor-default',
                 i === 0
                   ? 'border-forge-accent/30 bg-forge-accent/[.04]'
                   : 'border-transparent hover:border-forge-border hover:bg-forge-surface2'
               )}
             >
               <p className="text-[11px] font-semibold truncate mb-1">{h.prompt}</p>
+              {h.suiteId && h.suiteName && (
+                <div className="mb-1.5 flex flex-col gap-1">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[9px] font-mono text-forge-muted uppercase">Test Suite:</span>
+                    <span className="text-[10px] font-semibold text-forge-accent truncate">{h.suiteName}</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[9px] font-mono text-forge-muted uppercase">Tag Test Suite:</span>
+                    <span className="px-1.5 py-px rounded text-[9px] font-bold font-mono uppercase bg-purple-500/10 text-purple-400">
+                      Suite
+                    </span>
+                  </div>
+                </div>
+              )}
               <div className="flex items-center gap-1.5">
                 <TypeTag type={h.testType} />
                 <StatusTag status={h.status} />
